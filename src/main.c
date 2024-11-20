@@ -31,16 +31,16 @@ int main(){
 	int height = 320;
 	SDL_Renderer* renderer = initialize_window_and_renderer(width, height, 2);
 	
-	Matrix3 camera = {{10, 10, 0}, {0, 0, 10}, {0, 1, 0}};
-	Vector3 v1 = {-5, -5, 5};
+	Matrix3 camera = {(Vec3){10, 10, 10}, (Vec3){0, 0, 5}, (Vec3){0, 1, 0}};
+	Vec3 v1 = {-5, -5, 5};
 	Cube c1 = new_cube(10, v1);
 	
 	for (int i = 0; i < 8; i++){
-		Vector2 p1 = world_space_to_screen_space(width, height, 2, 0, 50, &camera, &c1.points[i]);
-		Vector2 p2;
+		Vec2 p1 = world_space_to_screen_space(width, height, 2, 0, 50, &camera, &c1.points[i]);
+		Vec2 p2;
 		for (int j = i + 1; j < 8; j++){
 			p2 = world_space_to_screen_space(width, height, 2, 0, 50, &camera, &c1.points[j]);
-			SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x,  p2.y);
+			SDL_RenderDrawLine(renderer, p1.vec.x, p1.vec.y, p2.vec.x,  p2.vec.y);
 		}
 	}
 	
