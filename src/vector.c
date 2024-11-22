@@ -1,6 +1,11 @@
 #include "vector.h"
 #include <math.h>
 
+Vec2 new_vec2(float x, float y){
+	Vec2 v = {x, y};
+	return v;
+}
+
 Vec2 add_v2(Vec2 *v1, Vec2 *v2){
 	Vec2 v3 = {v1->vec.x + v2->vec.x, v1->vec.y + v2->vec.y};
 	return v3;
@@ -36,6 +41,11 @@ Vec2 normalize_v2(Vec2 *v){
 
 
 
+Vec3 new_vec3(float x, float y, float z){
+	Vec3 v = {x, y, z};
+	return v;
+}
+
 Vec3 add_v3(Vec3 *v1, Vec3 *v2){
 	Vec3 v3 = {v1->vec.x + v2->vec.x, v1->vec.y + v2->vec.y, v1->vec.z + v2->vec.z};
 	return v3;
@@ -59,7 +69,7 @@ Vec3 scale_v3(Vec3 *v, float k){
 Vec3 cross_v3(Vec3 *v1, Vec3 *v2){
 	Vec3 v3;
 	v3.vec.x = ((v1->vec.y) * (v2->vec.z)) - ((v1->vec.z) * (v2->vec.y));
-	v3.vec.y = ((v1->vec.z) * (v2->vec.x)) - ((v1->vec.x) * (v2->vec.z));
+	v3.vec.y = -(((v1->vec.x) * (v2->vec.z)) - ((v1->vec.z) * (v2->vec.x)));
 	v3.vec.z = ((v1->vec.x) * (v2->vec.y)) - ((v1->vec.y) * (v2->vec.x));
 	return v3;
 }
@@ -75,6 +85,11 @@ Vec3 normalize_v3(Vec3 *v){
 }
 
 
+
+Vec4 new_vec4(float x, float y, float z, float w){
+	Vec4 v = {x, y, z, w};
+	return v;
+}
 
 Vec4 add_v4(Vec4 *v1, Vec4 *v2){
 	Vec4 v3 = {v1->vec.x + v2->vec.x, v1->vec.y + v2->vec.y, v1->vec.z + v2->vec.z, v1->vec.w + v2->vec.w};

@@ -3,7 +3,8 @@
 #include "vector.h"
 
 typedef struct {
-	Vec3 points[8];
+	Vec3 vertex[8];
+	int edges[12][2];
 } Cube;
 
 Cube new_cube(float length, Vec3 bottom_left_front);

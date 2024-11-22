@@ -2,13 +2,11 @@
 #include "vector.h"
 
 int main(){
-	printf("Vector3 size: %d\n", (int)sizeof(Vector3));
-	printf("float size: %d\n", (int)sizeof(float));
-	printf("union vec size: %d\n", (int)sizeof(Vec3));
+	Vec3 v = {4, 6, 6};
+	Vec3 v2 = {3, 1, 2};
 
-	Vec3 v = {1, 2, 3};
+	Vec3 sub = sub_v3(&v, &v2);
 	
-	printf("arrVec: \{%f, %f, %f}\n", v.arrVec[0], v.arrVec[1], v.arrVec[2]);
-	printf("Vec vec: \{%f, %f, %f}\n", v.vec.x, v.vec.y, v.vec.z);
+	printf("sub: {%f, %f, %f}\n", sub.vec.x, sub.vec.y, sub.vec.z);
 	return 0;
 }
