@@ -43,6 +43,8 @@ float cross_v2(Vec2* v1, Vec2* v2);
 float size_v2(Vec2* v);
 Vec2 normalize_v2(Vec2 *v);
 Vec2 new_vec2(float x, float y);
+Vec2 min(Vec2* v1, Vec2* v2);
+Vec2 max(Vec2* v1, Vec2* v2);
 
 Vec3 add_v3(Vec3* v1, Vec3* v2);
 Vec3 sub_v3(Vec3* v1, Vec3* v2);

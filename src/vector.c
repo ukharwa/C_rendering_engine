@@ -39,6 +39,16 @@ Vec2 normalize_v2(Vec2 *v){
 	return v1;
 }
 
+Vec2 min(Vec2 *v1, Vec2 *v2){
+	Vec2 v = {(v1->vec.x < v2->vec.x ?  v1->vec.x : v2 ->vec.x), (v1->vec.y < v2->vec.y ?  v1->vec.y : v2 ->vec.y)};
+	return v;
+}
+
+Vec2 max(Vec2 *v1, Vec2 *v2){
+	Vec2 v = {(v1->vec.x > v2->vec.x ?  v1->vec.x : v2 ->vec.x), (v1->vec.y > v2->vec.y ?  v1->vec.y : v2 ->vec.y)};
+	return v;
+}
+
 
 
 Vec3 new_vec3(float x, float y, float z){
