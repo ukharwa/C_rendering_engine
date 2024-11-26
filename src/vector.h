@@ -2,29 +2,14 @@
 
 typedef struct Vector2{
 	float x, y;
-} Vector2;
+} Vec2;
 
 typedef struct Vector3{
 	float x, y, z;
-} Vector3;
+} Vec3;
 
 typedef struct Vector4{
 	float x, y, z, w;
-} Vector4;
-
-typedef union {
-	float arr[2];
-	Vector2 vec;
-} Vec2;
-
-typedef union {
-	float arr[3];
-	Vector3 vec;
-} Vec3;
-
-typedef union {
-	float arr[4];
-	Vector4 vec;
 } Vec4;
 
 typedef struct Matrix3{
