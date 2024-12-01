@@ -64,3 +64,27 @@ void addIndices(IndexBufferObj *buffer, int *indexList, int size, int vBufferSiz
 
 	return;
 }
+
+frameBuffer newFrameBuffer(int width, int height){
+	Vec3 **row = calloc(height, sizeof(Vec3*));
+	if (row == NULL){
+		printf("Failed to create row buffer\n");
+		exit(EXIT_FAILURE);
+	}
+	for (int i = 0; i < width; i++){
+		Vec3 *col = calloc(width, sizeof(Vec3));
+		if (col == NULL){
+			printf("Failed to create col buffer\n");
+			exit(EXIT_FAILURE);
+		}
+		row[i] = col;
+	}
+
+	frameBuffer f = {row};
+
+	return f;
+}
+
+void appendFrameBuffer(frameBuffer *buffer, Vec3 *v, int row, int col){
+	buffer->pixels[row][col] = *v;
+}

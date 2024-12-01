@@ -67,7 +67,7 @@ Vec4 get_NDC(Matrix4 *view, Matrix4 *proj, Vec3 *v){
 	return ndc;
 }
 
-void draw_triangle(SDL_Renderer *renderer, Vec2 *p0, Vec2 *p1, Vec2 *p2){
+void draw_triangle(frameBuffer *buffer, Vec2 *p0, Vec2 *p1, Vec2 *p2){
 
 	Vec2 e0 = sub_v2(p1, p0);
 	Vec2 e1 = sub_v2(p2, p1);
@@ -89,7 +89,7 @@ void draw_triangle(SDL_Renderer *renderer, Vec2 *p0, Vec2 *p1, Vec2 *p2){
 			int w2 = cross_v2(&e2, &c2);
 			
 			if (w0 >= 0 && w1 >= 0 && w2 >= 0){
-				SDL_RenderDrawPoint(renderer, j, i);
+				buffer->pixels[i][j] = (Vec3){255, 255, 255};
 			}
 		}
 	}
@@ -98,18 +98,26 @@ void draw_triangle(SDL_Renderer *renderer, Vec2 *p0, Vec2 *p1, Vec2 *p2){
 void draw_scene(SDL_Renderer *renderer ,int width, int height, float fov, float znear, float zfar, Matrix3 *camera, VertexBufferObj vBuffer, IndexBufferObj iBuffer){
 	Matrix4 view_mat = get_view_matrix(camera);
 	Matrix4 proj_mat = get_projection_matrix(width, height, fov, znear, zfar);
-	Vec2 frameBuffer[vBuffer.size]; 
+	Vec2 vecBuffer[vBuffer.size]; 
 
 	for (int i = 0; i < vBuffer.size; i++){
 		Vec4 ndc = get_NDC(&view_mat, &proj_mat, &vBuffer.vertices[i]);
 		Vec2 screen_v = image_space_to_screen_space(width, height, &ndc);
-		frameBuffer[i] = screen_v;
+		vecBuffer[i] = screen_v;
 	}
+	
+	frameBuffer fBuffer = newFrameBuffer(width, height);
 
 	for (int i = 0; i < iBuffer.size; i += 3){
-		draw_triangle(renderer, &frameBuffer[iBuffer.indices[i]], &frameBuffer[iBuffer.indices[i+1]], &frameBuffer[iBuffer.indices[i+2]]);
+		draw_triangle(&fBuffer, &vecBuffer[iBuffer.indices[i]], &vecBuffer[iBuffer.indices[i+1]], &vecBuffer[iBuffer.indices[i+2]]);
 	}
-
+	
+	for (int i = 0; i < height; i++){
+		for (int j = 0; j < width; j++){
+			SDL_SetRenderDrawColor(renderer, fBuffer.pixels[i][j].x, fBuffer.pixels[i][j].y, fBuffer.pixels[i][j].y, 255);
+			SDL_RenderDrawPoint(renderer, j, i);
+		}
+	}
 }
 
 //void show_axes(SDL_Renderer *renderer, int width, int height, float fov, float znear, float zfar, Matrix3 *camera, float length){
