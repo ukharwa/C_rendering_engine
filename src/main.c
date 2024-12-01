@@ -11,6 +11,7 @@
 #include "pipeline.h"
 #include "shapes.h"
 #include "buffer.h"
+#include "vertex.h"
 
 SDL_Renderer * initialize_window_and_renderer(int width, int height, int scale){
 	
@@ -39,8 +40,8 @@ int main(){
 	VertexBufferObj vertexBuffer = newVertexBuffer(0);
 	IndexBufferObj indexBuffer = newIndexBuffer(0);
 
-	Cube c1 = new_cube(1, (Vec3){1, 0, -1});
-	Cube c2 = new_cube(1, (Vec3){2, 1, -2});
+	Cube c1 = new_cube(1, (Vec3){1, 0, -1}, (RGB){255, 255, 255});
+	Cube c2 = new_cube(1, (Vec3){2, 1, -2}, (RGB){255, 255, 255});
 
 	addIndices(&indexBuffer, c1.edges, 36, vertexBuffer.size);
 	addVertices(&vertexBuffer, c1.vertices, 8);
@@ -49,7 +50,6 @@ int main(){
 	addVertices(&vertexBuffer, c2.vertices, 8);
       
 	draw_scene(renderer, width, height, 1, 0.5, 10, &camera, vertexBuffer, indexBuffer);
-
 
 	SDL_RenderPresent(renderer);
 	SDL_Delay(10000);

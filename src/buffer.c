@@ -4,9 +4,10 @@
 
 #include "buffer.h"
 #include "vector.h"
+#include "vertex.h"
 
 VertexBufferObj newVertexBuffer(int size){
-	Vec3 *vBufferPtr = calloc(size, sizeof(Vec3));
+	Vertex *vBufferPtr = calloc(size, sizeof(Vertex));
 	
 	if (vBufferPtr == NULL){
 		printf("Failed to create vertex buffer\n");
@@ -18,21 +19,8 @@ VertexBufferObj newVertexBuffer(int size){
 	return vBuffer;
 }
 
-IndexBufferObj newIndexBuffer(int size){
-	int *iBufferPtr = calloc(size, sizeof(int));
-	
-	if (iBufferPtr == NULL){
-		printf("Failed to create index buffer\n");
-		exit(EXIT_FAILURE);
-	}
-
-	IndexBufferObj iBuffer = {iBufferPtr, size};
-	
-	return iBuffer;
-}
-
-void addVertices(VertexBufferObj *buffer, Vec3 *vertexList, int size){
-	Vec3 *newPtr = realloc(buffer->vertices, (buffer->size + size) * sizeof(Vec3));
+void addVertices(VertexBufferObj *buffer, Vertex *vertexList, int size){
+	Vertex *newPtr = realloc(buffer->vertices, (buffer->size + size) * sizeof(Vertex));
 	if (newPtr == NULL){
 		printf("Error occurred: Vertices not added\n");
 		return;
@@ -46,6 +34,19 @@ void addVertices(VertexBufferObj *buffer, Vec3 *vertexList, int size){
 	buffer->size += size;
 
 	return;
+}
+
+IndexBufferObj newIndexBuffer(int size){
+	int *iBufferPtr = calloc(size, sizeof(int));
+	
+	if (iBufferPtr == NULL){
+		printf("Failed to create index buffer\n");
+		exit(EXIT_FAILURE);
+	}
+
+	IndexBufferObj iBuffer = {iBufferPtr, size};
+	
+	return iBuffer;
 }
 
 void addIndices(IndexBufferObj *buffer, int *indexList, int size, int vBufferSize){
