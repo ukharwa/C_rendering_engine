@@ -1,5 +1,8 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "pipeline.h"
 #include "vector.h"
@@ -64,6 +67,34 @@ Vec4 get_NDC(Matrix4 *view, Matrix4 *proj, Vec3 *v){
 	return ndc;
 }
 
+void draw_triangle(SDL_Renderer *renderer, Vec2 *p0, Vec2 *p1, Vec2 *p2){
+
+	Vec2 e0 = sub_v2(p1, p0);
+	Vec2 e1 = sub_v2(p2, p1);
+	Vec2 e2 = sub_v2(p0, p2);
+
+	float y_max = max_3(p0, p1, p2).y;
+	float x_max = max_3(p0, p1, p2).x;
+	float y_min = min_3(p0, p1, p2).y;
+	float x_min = min_3(p0, p1, p2).x;
+	
+	int bufferPos = 0;
+	for (int i = y_min; i < y_max; i++){
+		for (int j = x_min; j < x_max; j++){
+			Vec2 c0 = sub_v2(&(Vec2){j, i}, p0);
+			Vec2 c1 = sub_v2(&(Vec2){j, i}, p1);
+			Vec2 c2 = sub_v2(&(Vec2){j, i}, p2);
+			int w0 = cross_v2(&e0, &c0);
+			int w1 = cross_v2(&e1, &c1);
+			int w2 = cross_v2(&e2, &c2);
+			
+			if (w0 >= 0 && w1 >= 0 && w2 >= 0){
+				SDL_RenderDrawPoint(renderer, j, i);
+			}
+		}
+	}
+}
+
 void draw_scene(SDL_Renderer *renderer ,int width, int height, float fov, float znear, float zfar, Matrix3 *camera, VertexBufferObj vBuffer, IndexBufferObj iBuffer){
 	Matrix4 view_mat = get_view_matrix(camera);
 	Matrix4 proj_mat = get_projection_matrix(width, height, fov, znear, zfar);
@@ -76,14 +107,34 @@ void draw_scene(SDL_Renderer *renderer ,int width, int height, float fov, float 
 	}
 
 	for (int i = 0; i < iBuffer.size; i += 3){
-		Vec2 p1 = frameBuffer[iBuffer.indices[i]];
-		Vec2 p2 = frameBuffer[iBuffer.indices[i+1]];
-		Vec2 p3 = frameBuffer[iBuffer.indices[i+2]];
-		SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
-		SDL_RenderDrawLine(renderer, p2.x, p2.y, p3.x, p3.y);
-		SDL_RenderDrawLine(renderer, p3.x, p3.y, p1.x, p1.y);
+		draw_triangle(renderer, &frameBuffer[iBuffer.indices[i]], &frameBuffer[iBuffer.indices[i+1]], &frameBuffer[iBuffer.indices[i+2]]);
 	}
 
-
 }
+
+//void show_axes(SDL_Renderer *renderer, int width, int height, float fov, float znear, float zfar, Matrix3 *camera, float length){
+//
+//	Vec2 x1 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){-length, 0, 0});
+//	Vec2 x2 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){length, 0, 0});
+//
+//	Vec2 y1 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){0, -length, 0});
+//	Vec2 y2 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){0, length, 0});
+//	
+//	Vec2 z1 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){0, 0, -length});
+//	Vec2 z2 = world_space_to_screen_space(width, height, fov, znear, zfar, camera, &(Vec3){0, 0, length});
+//
+//	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+//	SDL_RenderDrawLine(renderer, x1.x, x1.y, x2.x, x2.y);
+//	
+//	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+//	SDL_RenderDrawLine(renderer, y1.x, y1.y, y2.x, y2.y);
+//	
+//	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+//	SDL_RenderDrawLine(renderer, z1.x, z1.y, z2.x, z2.y);
+//	
+//	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+//	SDL_RenderDrawPoint(renderer, x2.x, x2.y);
+//	SDL_RenderDrawPoint(renderer, y2.x, y2.y);
+//	SDL_RenderDrawPoint(renderer, z2.x, z2.y);
+//}
 

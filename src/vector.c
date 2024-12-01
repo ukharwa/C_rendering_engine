@@ -49,6 +49,17 @@ Vec2 max(Vec2 *v1, Vec2 *v2){
 	return v;
 }
 
+Vec2 max_3(Vec2 *v1, Vec2 *v2, Vec2 *v3){
+	Vec2 m1 = max(v1, v2);
+	Vec2 v = {m1.x > v3->x ? m1.x : v3->x, (m1.y > v3->y ? m1.y : v3->y)};
+	return v;
+}
+
+Vec2 min_3(Vec2 *v1, Vec2 *v2, Vec2 *v3){
+	Vec2 m1 = min(v1, v2);
+	Vec2 v = {m1.x < v3->x ? m1.x : v3->x, (m1.y < v3->y ? m1.y : v3->y)};
+	return v;
+}
 
 
 Vec3 new_vec3(float x, float y, float z){
