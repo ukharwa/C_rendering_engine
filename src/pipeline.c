@@ -1,7 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 #include "pipeline.h"
 #include "vector.h"
