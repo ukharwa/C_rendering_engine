@@ -1,2 +1,2 @@
-# C_rendering_engine
-A rendering engine written in C using sdl2
+# Rendering Engine
+A 3D rendering engine written in C using sdl2
